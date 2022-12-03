@@ -4,10 +4,5 @@ import { Navbar } from "../components";
 import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Navbar />
-      <Component {...pageProps} />
-    </>
-  );
+  return <Component {...pageProps} />;
 }
