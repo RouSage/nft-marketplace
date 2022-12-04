@@ -3,7 +3,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import { Fragment } from "react";
 
-const navigation = [
+const NAVIGATION = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Team", href: "#", current: false },
   { name: "Projects", href: "#", current: false },
@@ -37,7 +37,7 @@ const Navar = () => (
               </div>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
-                  {navigation.map((item) => (
+                  {NAVIGATION.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -134,7 +134,7 @@ const Navar = () => (
 
         <Disclosure.Panel className="sm:hidden">
           <div className="space-y-1 px-2 pt-2 pb-3">
-            {navigation.map((item) => (
+            {NAVIGATION.map((item) => (
               <Disclosure.Button
                 key={item.name}
                 as="a"
