@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
 
-import { BaseLayout } from "../../components";
+import { BaseLayout } from "components";
 
 const ATTRIBUTES = ["health", "attack", "speed"];
 
@@ -16,10 +16,10 @@ const NftCreate = () => {
       <div>
         <div className="py-4">
           {!nftURI && (
-            <div className="flex">
-              <div className="mr-2 font-bold underline">
+            <section className="flex">
+              <h5 className="mr-2 font-bold underline">
                 Do you have meta data already?
-              </div>
+              </h5>
               <Switch
                 checked={hasURI}
                 onChange={() => setHasURI(!hasURI)}
@@ -37,12 +37,12 @@ const NftCreate = () => {
                   )}
                 />
               </Switch>
-            </div>
+            </section>
           )}
         </div>
         {nftURI || hasURI ? (
           <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
+            <aside className="md:col-span-1">
               <div className="px-4 sm:px-0">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   List NFT
@@ -52,8 +52,8 @@ const NftCreate = () => {
                   you share.
                 </p>
               </div>
-            </div>
-            <div className="mt-5 md:mt-0 md:col-span-2">
+            </aside>
+            <section className="mt-5 md:mt-0 md:col-span-2">
               <form>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   {hasURI && (
@@ -120,11 +120,11 @@ const NftCreate = () => {
                   </div>
                 </div>
               </form>
-            </div>
+            </section>
           </div>
         ) : (
           <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
+            <aside className="md:col-span-1">
               <div className="px-4 sm:px-0">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Create NFT Metadata
@@ -134,8 +134,8 @@ const NftCreate = () => {
                   you share.
                 </p>
               </div>
-            </div>
-            <div className="mt-5 md:mt-0 md:col-span-2">
+            </aside>
+            <section className="mt-5 md:mt-0 md:col-span-2">
               <form>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
                   <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -262,7 +262,7 @@ const NftCreate = () => {
                   </div>
                 </div>
               </form>
-            </div>
+            </section>
           </div>
         )}
       </div>
