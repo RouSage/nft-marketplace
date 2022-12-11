@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-import { NftAttribute } from "../../../types/nft";
+import { NftAttribute } from "types/nft";
 
 type Props = {
   name: string;

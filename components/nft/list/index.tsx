@@ -1,7 +1,7 @@
 import React from "react";
 
-import { NftMeta } from "../../../types/nft";
-import NftItem from "../item";
+import { NftItem } from "components";
+import { NftMeta } from "types/nft";
 
 type Props = {
   nfts: NftMeta[];

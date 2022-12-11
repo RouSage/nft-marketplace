@@ -1,6 +1,6 @@
-import { BaseLayout, NftList } from "../components";
-import nfts from "../content/meta.json";
-import { NftMeta } from "../types/nft";
+import { BaseLayout, NftList } from "components";
+import nfts from "content/meta.json";
+import { NftMeta } from "types/nft";
 
 const Home = () => {
   return (
