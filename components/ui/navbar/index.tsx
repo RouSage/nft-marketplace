@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { Fragment } from "react";
 
-import ActiveLink from "components/link";
+import ActiveLink from "components/ui/link";
 import { Routes } from "routes";
 
 const NAVIGATION = [

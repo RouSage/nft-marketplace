@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
 
-import { BaseLayout } from "components";
+import { BaseLayout } from "components/ui";
 
 const ATTRIBUTES = ["health", "attack", "speed"];
 

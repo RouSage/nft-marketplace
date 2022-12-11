@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NftItem } from "components";
+import { NftItem } from "components/ui";
 import { NftMeta } from "types/nft";
 
 type Props = {
