@@ -1,8 +1,19 @@
+import { useWeb3 } from "components/providers/web3";
 import { BaseLayout, NftList } from "components/ui";
 import nfts from "content/meta.json";
 import { NftMeta } from "types/nft";
 
 const Home = () => {
+  const { contract } = useWeb3();
+
+  const getNftInfo = async () => {
+    if (!contract) return;
+    console.log(await contract.name());
+    console.log(await contract.symbol());
+  };
+
+  getNftInfo();
+
   return (
     <BaseLayout>
       <div className="relative bg-gray-50 pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
