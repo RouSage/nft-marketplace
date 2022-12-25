@@ -1,6 +1,8 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 
+import { Web3Hooks } from "components/hooks/web3/setupHooks";
+
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;
 
 declare global {
@@ -9,7 +11,7 @@ declare global {
   }
 }
 
-export type Web3Params = {
+type Web3Params = {
   ethereum: MetaMaskInpageProvider | null;
   provider: providers.Web3Provider | null;
   contract: Contract | null;
@@ -17,6 +19,7 @@ export type Web3Params = {
 
 export type Web3State = {
   isLoading: boolean;
+  hooks: Web3Hooks;
 } & Web3Params;
 
 export const loadContract = async (

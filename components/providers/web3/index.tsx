@@ -1,6 +1,8 @@
 import { providers } from "ethers";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { setupHooks } from "components/hooks/web3/setupHooks";
+
 import { loadContract, Web3State } from "./utils";
 
 const initialState: Web3State = {
@@ -8,6 +10,7 @@ const initialState: Web3State = {
   ethereum: null,
   provider: null,
   isLoading: true,
+  hooks: setupHooks({} as any),
 };
 
 const Web3Context = createContext<Web3State>(initialState);
@@ -26,6 +29,7 @@ const Web3Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
         contract,
         provider,
         isLoading: false,
+        hooks: setupHooks({ contract, ethereum, provider }),
       });
     };
 
