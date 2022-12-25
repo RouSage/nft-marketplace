@@ -1,7 +1,8 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 
-import { Web3Hooks } from "components/hooks/web3/setupHooks";
+import { setupHooks, Web3Hooks } from "components/hooks/web3/setupHooks";
+import { Web3Dependencies } from "types/hooks";
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;
 
@@ -11,16 +12,35 @@ declare global {
   }
 }
 
-type Web3Params = {
-  ethereum: MetaMaskInpageProvider | null;
-  provider: providers.Web3Provider | null;
-  contract: Contract | null;
+type Nullable<T> = {
+  [P in keyof T]: T[P] | null;
 };
 
 export type Web3State = {
   isLoading: boolean;
   hooks: Web3Hooks;
-} & Web3Params;
+} & Nullable<Web3Dependencies>;
+
+export const createInitialState = (): Web3State => ({
+  contract: null,
+  ethereum: null,
+  provider: null,
+  isLoading: true,
+  hooks: setupHooks({} as any),
+});
+
+export const createWeb3State = ({
+  contract,
+  ethereum,
+  provider,
+  isLoading,
+}: Web3Dependencies & Pick<Web3State, "isLoading">): Web3State => ({
+  contract,
+  ethereum,
+  provider,
+  isLoading,
+  hooks: setupHooks({ contract, ethereum, provider }),
+});
 
 export const loadContract = async (
   name: string, // NftMarket
