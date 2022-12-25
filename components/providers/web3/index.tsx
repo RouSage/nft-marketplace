@@ -34,4 +34,10 @@ const Web3Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 export const useWeb3 = () => useContext(Web3Context);
 
+export const useHooks = () => {
+  const { hooks } = useWeb3();
+
+  return hooks;
+};
+
 export default Web3Provider;

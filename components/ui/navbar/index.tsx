@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { Fragment } from "react";
 
-import { useWeb3 } from "components/providers/web3";
+import { useAccount } from "components/hooks/web3";
 import ActiveLink from "components/ui/link";
 import { Routes } from "routes";
 
@@ -14,9 +14,8 @@ const NAVIGATION = [
 ];
 
 const Navbar = () => {
-  const { hooks } = useWeb3();
-  const { data } = hooks.useAccount("Test Params");
-  console.log("DATA", data);
+  const { account } = useAccount();
+  console.log(account.data);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
