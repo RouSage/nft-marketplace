@@ -15,7 +15,6 @@ const NAVIGATION = [
 
 const Navbar = () => {
   const { account } = useAccount();
-  console.log(account.data);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
