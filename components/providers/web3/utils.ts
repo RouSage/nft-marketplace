@@ -17,7 +17,6 @@ type Nullable<T> = {
 };
 
 export type Web3State = {
-  isLoading: boolean;
   hooks: Web3Hooks;
 } & Nullable<Web3Dependencies>;
 
@@ -26,7 +25,7 @@ export const createInitialState = (): Web3State => ({
   ethereum: null,
   provider: null,
   isLoading: true,
-  hooks: setupHooks({} as any),
+  hooks: setupHooks({ isLoading: true } as any),
 });
 
 export const createWeb3State = ({
@@ -34,12 +33,12 @@ export const createWeb3State = ({
   ethereum,
   provider,
   isLoading,
-}: Web3Dependencies & Pick<Web3State, "isLoading">): Web3State => ({
+}: Web3Dependencies): Web3State => ({
   contract,
   ethereum,
   provider,
   isLoading,
-  hooks: setupHooks({ contract, ethereum, provider }),
+  hooks: setupHooks({ contract, ethereum, provider, isLoading }),
 });
 
 export const loadContract = async (
