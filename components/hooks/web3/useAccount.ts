@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useSWR from "swr";
 
 import { CryptoHookFactory } from "types/hooks";
@@ -13,7 +14,7 @@ export type UseAccountHook = ReturnType<AccountHookFactory>;
 export const hookFactory: AccountHookFactory =
   ({ ethereum, provider }) =>
   (params) => {
-    const swrResponse = useSWR(
+    const { data, mutate, ...swr } = useSWR(
       provider ? "web3/useAccount" : null,
       async () => {
         const accounts = await provider?.listAccounts();
@@ -36,5 +37,23 @@ export const hookFactory: AccountHookFactory =
       }
     };
 
-    return { ...swrResponse, connect };
+    const handleAccountsChanged = (...args: unknown[]) => {
+      const accounts = args[0] as string[];
+
+      if (!accounts.length) {
+        console.error("Please, connect to Web3 Wallet");
+      } else if (accounts[0] !== data) {
+        mutate(accounts[0]);
+      }
+    };
+
+    useEffect(() => {
+      ethereum?.on("accountsChanged", handleAccountsChanged);
+
+      return () => {
+        ethereum?.removeListener("accountsChanged", handleAccountsChanged);
+      };
+    });
+
+    return { ...swr, data, mutate, connect };
   };
