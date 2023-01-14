@@ -13,8 +13,13 @@ const NETWORKS: Record<string, string> = {
   1337: "Ganache",
 };
 
+const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID as string;
+const TARGET_NETWORK = NETWORKS[TARGET_CHAIN_ID];
+
 type UseNetworkResponse = {
   isLoading: boolean;
+  isSupported: boolean;
+  targetNetwork: string;
 };
 
 type NetworkHookFactory = CryptoHookFactory<string, UseNetworkResponse>;
@@ -43,7 +48,9 @@ export const hookFactory: NetworkHookFactory =
     return {
       ...swr,
       data,
+      targetNetwork: TARGET_NETWORK,
       isValidating,
+      isSupported: data === TARGET_NETWORK,
       isLoading: isLoading || isValidating,
     };
   };
