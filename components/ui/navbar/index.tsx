@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useMemo } from "react";
 
 import { useAccount, useNetwork } from "components/hooks/web3";
 import ActiveLink from "components/ui/link";
@@ -15,6 +16,13 @@ const NAVIGATION = [
 const Navbar = () => {
   const { account } = useAccount();
   const { network } = useNetwork();
+
+  const networkLabel = useMemo(() => {
+    if (network.isLoading) return "Loading...";
+    if (account.isInstalled) return network.data;
+
+    return "Install Web3 Wallet";
+  }, [network.isLoading, network.data, account.isInstalled]);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -66,7 +74,7 @@ const Navbar = () => {
                     >
                       <circle cx={4} cy={4} r={3} />
                     </svg>
-                    {network.data}
+                    {networkLabel}
                   </span>
                 </div>
                 <WalletBar
