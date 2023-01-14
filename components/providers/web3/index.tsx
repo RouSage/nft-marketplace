@@ -6,22 +6,36 @@ import {
   createInitialState,
   createWeb3State,
   loadContract,
-  pageReload,
   Web3State,
 } from "./utils";
+
+const pageReload = () => window.location.reload();
+
+const handleAccountsChanged =
+  (ethereum: MetaMaskInpageProvider) => async () => {
+    const isUnlocked = await ethereum._metamask.isUnlocked();
+
+    if (!isUnlocked) {
+      pageReload();
+    }
+  };
+
+const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
+  ethereum.on("chainChanged", pageReload);
+  ethereum.on("accountsChanged", handleAccountsChanged(ethereum));
+};
+
+const removeGlobalListeners = (
+  ethereum: MetaMaskInpageProvider | undefined
+) => {
+  ethereum?.removeListener("chainChanged", pageReload);
+  ethereum?.removeListener("accountsChanged", handleAccountsChanged);
+};
 
 const Web3Context = createContext<Web3State>(createInitialState());
 
 const Web3Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [web3Api, setWeb3Api] = useState<Web3State>(createInitialState());
-
-  const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
-    ethereum.on("chainChanged", pageReload);
-  };
-
-  const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
-    ethereum.removeListener("chainChanged", pageReload);
-  };
 
   useEffect(() => {
     const initWeb3 = async () => {
