@@ -63,3 +63,5 @@ export const loadContract = async (
     provider
   );
 };
+
+export const pageReload = () => window.location.reload();
