@@ -1,10 +1,7 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import classNames from "classnames";
-import Link from "next/link";
-import { Fragment } from "react";
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import { useAccount } from "components/hooks/web3";
+import { useAccount, useNetwork } from "components/hooks/web3";
 import ActiveLink from "components/ui/link";
 import { Routes } from "routes";
 
@@ -17,6 +14,7 @@ const NAVIGATION = [
 
 const Navbar = () => {
   const { account } = useAccount();
+  const { network } = useNetwork();
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -59,6 +57,18 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div className="text-gray-300 self-center mr-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
+                    <svg
+                      className="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx={4} cy={4} r={3} />
+                    </svg>
+                    {network.data}
+                  </span>
+                </div>
                 <WalletBar
                   account={account.data}
                   connect={account.connect}
