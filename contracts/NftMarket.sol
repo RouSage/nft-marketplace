@@ -11,10 +11,29 @@ contract NftMarket is ERC721URIStorage {
   Counters.Counter private _tokenIds;
 
   mapping(string => bool) private _usedTokenURIs;
+  mapping(uint256 => NftItem) private _idToNftItem;
+
+  struct NftItem {
+    uint256 tokenId;
+    uint256 price;
+    address creator;
+    bool isListed;
+  }
+
+  event NftItemCreated(
+    uint256 tokenId,
+    uint256 price,
+    address creator,
+    bool isListed
+  );
 
   constructor() ERC721("CreaturesNFT", "CNFT") {}
 
-  function mintToken(string memory tokenURI) public payable returns (uint256) {
+  function mintToken(string memory tokenURI, uint256 price)
+    public
+    payable
+    returns (uint256)
+  {
     require(!tokenURIExists(tokenURI), "Token URI already exists");
 
     _tokenIds.increment();
@@ -24,9 +43,18 @@ contract NftMarket is ERC721URIStorage {
 
     _safeMint(msg.sender, newTokenId);
     _setTokenURI(newTokenId, tokenURI);
+    _createNftItem(newTokenId, price);
     _usedTokenURIs[tokenURI] = true;
 
     return newTokenId;
+  }
+
+  function _createNftItem(uint256 tokenId, uint256 price) private {
+    require(price > 0, "Price must be at least 1 wei");
+
+    _idToNftItem[tokenId] = NftItem(tokenId, price, msg.sender, true);
+
+    emit NftItemCreated(tokenId, price, msg.sender, true);
   }
 
   function tokenURIExists(string memory tokenURI) public view returns (bool) {
