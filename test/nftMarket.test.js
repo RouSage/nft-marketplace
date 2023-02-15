@@ -97,4 +97,39 @@ contract("NftMarket", (accounts) => {
       assert.equal(currentOwner, accounts[1], "Owner is not changed");
     });
   });
+
+  describe("Token transfers", () => {
+    const tokenURI = "https://test-2.com";
+
+    before(async () => {
+      await _contract.mintToken(tokenURI, _nftPrice, {
+        from: accounts[0],
+        value: _listingPrice,
+      });
+    });
+
+    it("should have two NFTs created", async () => {
+      const totalSupply = await _contract.totalSupply();
+
+      assert.equal(
+        totalSupply.toNumber(),
+        2,
+        "Total supply of tokens is not correct"
+      );
+    });
+
+    it("should be able to retrieve NFT by index", async () => {
+      const firstNft = await _contract.tokenByIndex(0);
+      const secondNft = await _contract.tokenByIndex(1);
+
+      assert.equal(firstNft.toNumber(), 1, "NFT id is wrong");
+      assert.equal(secondNft.toNumber(), 2, "NFR id is wrong");
+    });
+
+    it("should have one listed NFT", async () => {
+      const allNfts = await _contract.getAllNftsOnSale();
+
+      assert.equal(allNfts[0].tokenId, 2, "NFT has a wrong tokenId");
+    });
+  });
 });

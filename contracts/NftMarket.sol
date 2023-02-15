@@ -19,8 +19,13 @@ contract NftMarket is ERC721URIStorage {
   Counters.Counter private _listedItems;
   Counters.Counter private _tokenIds;
 
+  // All tokenIds
+  uint256[] private _allNfts;
+
   mapping(string => bool) private _usedTokenURIs;
   mapping(uint256 => NftItem) private _idToNftItem;
+
+  mapping(uint256 => uint256) private _idToNftIndex;
 
   event NftItemCreated(
     uint256 tokenId,
@@ -41,6 +46,34 @@ contract NftMarket is ERC721URIStorage {
 
   function tokenURIExists(string memory tokenURI) public view returns (bool) {
     return _usedTokenURIs[tokenURI] == true;
+  }
+
+  function totalSupply() public view returns (uint256) {
+    return _allNfts.length;
+  }
+
+  function tokenByIndex(uint256 index) public view returns (uint256) {
+    require(index < totalSupply(), "Index out of bounds");
+
+    return _allNfts[index];
+  }
+
+  function getAllNftsOnSale() public view returns (NftItem[] memory) {
+    uint256 allItemsCount = totalSupply();
+    uint256 currentIndex = 0;
+    NftItem[] memory items = new NftItem[](_listedItems.current());
+
+    for (uint256 i = 0; i < allItemsCount; i++) {
+      uint256 tokenId = tokenByIndex(i);
+      NftItem storage item = _idToNftItem[tokenId];
+
+      if (item.isListed == true) {
+        items[currentIndex] = item;
+        currentIndex += 1;
+      }
+    }
+
+    return items;
   }
 
   function mintToken(string memory tokenURI, uint256 price)
@@ -84,5 +117,24 @@ contract NftMarket is ERC721URIStorage {
     _idToNftItem[tokenId] = NftItem(tokenId, price, msg.sender, true);
 
     emit NftItemCreated(tokenId, price, msg.sender, true);
+  }
+
+  function _beforeTokenTransfer(
+    address from,
+    address to,
+    uint256 tokenId,
+    uint256 batchSize
+  ) internal virtual override {
+    super._beforeTokenTransfer(from, to, tokenId, batchSize);
+
+    // Minting token
+    if (from == address(0)) {
+      _addTokenToAllTokensEnumeration(tokenId);
+    }
+  }
+
+  function _addTokenToAllTokensEnumeration(uint256 tokenId) private {
+    _idToNftIndex[tokenId] = _allNfts.length;
+    _allNfts.push(tokenId);
   }
 }
