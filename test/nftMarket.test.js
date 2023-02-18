@@ -148,4 +148,22 @@ contract("NftMarket", (accounts) => {
       assert.equal(ownedNfts[0].tokenId, 2, "NFT has a wrong tokenId");
     });
   });
+
+  describe("Token transfer to new owner", () => {
+    before(async () => {
+      await _contract.transferFrom(accounts[0], accounts[1], 2);
+    });
+
+    it("account[0] should have 0 tokens", async () => {
+      const ownedNfts = await _contract.getOwnedNfts({ from: accounts[0] });
+
+      assert.equal(ownedNfts.length, 0, "Invalid length of tokens");
+    });
+
+    it("account[1] should have  2 tokens", async () => {
+      const ownedNfts = await _contract.getOwnedNfts({ from: accounts[1] });
+
+      assert.equal(ownedNfts.length, 2, "Invalid length of tokens");
+    });
+  });
 });
