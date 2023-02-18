@@ -182,6 +182,13 @@ contract("NftMarket", (accounts) => {
       assert.equal(listedNfts.length, 2, "Invalid length of NFTs");
       assert.equal(listedNftsCount, 2, "Invalid length of NFTs");
     });
+
+    it("should set new listing price", async () => {
+      await _contract.setListingPrice(_listingPrice, { from: accounts[0] });
+      const listingPrice = await _contract.listingPrice();
+
+      assert.equal(listingPrice, _listingPrice, "Invalid listing price");
+    });
   });
 
   //
