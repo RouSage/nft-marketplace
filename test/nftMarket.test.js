@@ -167,27 +167,47 @@ contract("NftMarket", (accounts) => {
     });
   });
 
-  describe("Burn token", () => {
-    const tokenURI = "https://test-3.com";
-
+  describe("List NFT", () => {
     before(async () => {
-      await _contract.mintToken(tokenURI, _nftPrice, {
-        from: accounts[2],
+      await _contract.placeNftOnSale(1, _nftPrice, {
+        from: accounts[1],
         value: _listingPrice,
       });
     });
 
-    it("account[2] should have 1 owned token", async () => {
-      const ownedNfts = await _contract.getOwnedNfts({ from: accounts[2] });
+    it("should have 2 listed items", async () => {
+      const listedNfts = await _contract.getAllNftsOnSale();
+      const listedNftsCount = await _contract.getListedItemsCount();
 
-      assert.equal(ownedNfts[0].tokenId, 3, "Nft has a wrong tokenId");
-    });
-
-    it("account[2] should have 0 owned tokens", async () => {
-      await _contract.burnToken(3, { from: accounts[2] });
-      const ownedNfts = await _contract.getOwnedNfts({ from: accounts[2] });
-
-      assert.equal(ownedNfts.length, 0, "Invalid length of tokens");
+      assert.equal(listedNfts.length, 2, "Invalid length of NFTs");
+      assert.equal(listedNftsCount, 2, "Invalid length of NFTs");
     });
   });
+
+  //
+  // UNUSED LOGIC
+  //
+  // describe("Burn token", () => {
+  //   const tokenURI = "https://test-3.com";
+
+  //   before(async () => {
+  //     await _contract.mintToken(tokenURI, _nftPrice, {
+  //       from: accounts[2],
+  //       value: _listingPrice,
+  //     });
+  //   });
+
+  //   it("account[2] should have 1 owned token", async () => {
+  //     const ownedNfts = await _contract.getOwnedNfts({ from: accounts[2] });
+
+  //     assert.equal(ownedNfts[0].tokenId, 3, "Nft has a wrong tokenId");
+  //   });
+
+  //   it("account[2] should have 0 owned tokens", async () => {
+  //     await _contract.burnToken(3, { from: accounts[2] });
+  //     const ownedNfts = await _contract.getOwnedNfts({ from: accounts[2] });
+
+  //     assert.equal(ownedNfts.length, 0, "Invalid length of tokens");
+  //   });
+  // });
 });
