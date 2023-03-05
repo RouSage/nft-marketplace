@@ -46,10 +46,13 @@ const Web3Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
         const provider = new providers.Web3Provider(ethereum as any);
         const contract = await loadContract("NftMarket", provider);
 
+        const signer = provider.getSigner();
+        const signedContract = contract.connect(signer);
+
         setGlobalListeners(ethereum);
         setWeb3Api(
           createWeb3State({
-            contract: contract as unknown as NftMarketContract,
+            contract: signedContract as unknown as NftMarketContract,
             ethereum,
             provider,
             isLoading: false,
