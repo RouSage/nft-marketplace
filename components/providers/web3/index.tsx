@@ -2,6 +2,8 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import { providers } from "ethers";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { NftMarketContract } from "types/nftMarketContract";
+
 import {
   createInitialState,
   createWeb3State,
@@ -46,7 +48,12 @@ const Web3Provider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
         setGlobalListeners(ethereum);
         setWeb3Api(
-          createWeb3State({ contract, ethereum, provider, isLoading: false })
+          createWeb3State({
+            contract: contract as unknown as NftMarketContract,
+            ethereum,
+            provider,
+            isLoading: false,
+          })
         );
       } catch (error) {
         console.error("Please, install Web3 wallet");
