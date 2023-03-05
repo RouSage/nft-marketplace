@@ -1,11 +1,8 @@
 import { useListedNfts } from "components/hooks/web3";
 import { BaseLayout, NftList } from "components/ui";
-import { NftMeta } from "types/nft";
 
 const Home = () => {
   const { nfts } = useListedNfts();
-
-  console.log(nfts.data);
 
   return (
     <BaseLayout>

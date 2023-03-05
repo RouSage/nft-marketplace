@@ -1,21 +1,21 @@
 import React from "react";
 
 import { NftItem } from "components/ui";
-import { NftMeta } from "types/nft";
+import { Nft } from "types/nft";
 
 type Props = {
-  nfts: NftMeta[];
+  nfts: Nft[] | undefined;
 };
 
 const NftList = ({ nfts }: Props) => (
   <section className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
-    {nfts.map(({ attributes, description, image, name }) => (
+    {nfts?.map(({ meta }) => (
       <NftItem
-        key={image}
-        attributes={attributes}
-        description={description}
-        image={image}
-        name={name}
+        key={meta.name}
+        attributes={meta.attributes}
+        description={meta.description}
+        image={meta.image}
+        name={meta.name}
       />
     ))}
   </section>
