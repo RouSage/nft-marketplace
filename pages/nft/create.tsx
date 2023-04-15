@@ -25,7 +25,7 @@ const NftCreate = () => {
                 onChange={() => setHasURI(!hasURI)}
                 className={classNames(
                   `${hasURI ? "bg-indigo-900" : "bg-indigo-700"}`,
-                  "relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75"
+                  "relative inline-flex h-[28px] w-[64px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75"
                 )}
               >
                 <span className="sr-only">Use setting</span>
@@ -33,7 +33,7 @@ const NftCreate = () => {
                   aria-hidden="true"
                   className={classNames(
                     `${hasURI ? "translate-x-9" : "translate-x-0"}`,
-                    "pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200"
+                    "pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
                   )}
                 />
               </Switch>
@@ -53,11 +53,11 @@ const NftCreate = () => {
                 </p>
               </div>
             </aside>
-            <section className="mt-5 md:mt-0 md:col-span-2">
+            <section className="mt-5 md:col-span-2 md:mt-0">
               <form>
-                <div className="shadow sm:rounded-md sm:overflow-hidden">
+                <div className="shadow sm:overflow-hidden sm:rounded-md">
                   {hasURI && (
-                    <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                    <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                       <div>
                         <label
                           htmlFor="uri"
@@ -71,7 +71,7 @@ const NftCreate = () => {
                             type="text"
                             name="uri"
                             id="uri"
-                            className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                            className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="http://link.com/data.json"
                           />
                         </div>
@@ -84,14 +84,14 @@ const NftCreate = () => {
                       <div>
                         <Link
                           href={nftURI}
-                          className="underline text-indigo-600"
+                          className="text-indigo-600 underline"
                         >
                           {nftURI}
                         </Link>
                       </div>
                     </div>
                   )}
-                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                  <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                     <div>
                       <label
                         htmlFor="price"
@@ -104,16 +104,16 @@ const NftCreate = () => {
                           type="number"
                           name="price"
                           id="price"
-                          className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                          className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="0.8"
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                  <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       List
                     </button>
@@ -135,10 +135,10 @@ const NftCreate = () => {
                 </p>
               </div>
             </aside>
-            <section className="mt-5 md:mt-0 md:col-span-2">
+            <section className="mt-5 md:col-span-2 md:mt-0">
               <form>
-                <div className="shadow sm:rounded-md sm:overflow-hidden">
-                  <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                <div className="shadow sm:overflow-hidden sm:rounded-md">
+                  <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                     <div>
                       <label
                         htmlFor="name"
@@ -151,7 +151,7 @@ const NftCreate = () => {
                           type="text"
                           name="name"
                           id="name"
-                          className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                          className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="My Nice NFT"
                         />
                       </div>
@@ -168,7 +168,7 @@ const NftCreate = () => {
                           id="description"
                           name="description"
                           rows={3}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="Some nft description..."
                           defaultValue={""}
                         />
@@ -189,7 +189,7 @@ const NftCreate = () => {
                         <label className="block text-sm font-medium text-gray-700">
                           Cover photo
                         </label>
-                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                        <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                           <div className="space-y-1 text-center">
                             <svg
                               className="mx-auto h-12 w-12 text-gray-400"
@@ -208,7 +208,7 @@ const NftCreate = () => {
                             <div className="flex text-sm text-gray-600">
                               <label
                                 htmlFor="file-upload"
-                                className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                               >
                                 <span>Upload a file</span>
                                 <input
@@ -243,19 +243,19 @@ const NftCreate = () => {
                             type="text"
                             name={attribute}
                             id={attribute}
-                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           />
                         </div>
                       ))}
                     </div>
-                    <p className="text-sm !mt-2 text-gray-500">
+                    <p className="!mt-2 text-sm text-gray-500">
                       Choose value from 0 to 100
                     </p>
                   </div>
-                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                  <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Save
                     </button>

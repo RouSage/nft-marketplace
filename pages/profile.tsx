@@ -9,11 +9,11 @@ const TABS = [{ name: "Your Collection", href: "#", current: true }];
 const Profile = () => {
   return (
     <BaseLayout>
-      <div className="h-full flex">
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 flex items-stretch overflow-hidden">
+      <div className="flex h-full">
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <div className="flex flex-1 items-stretch overflow-hidden">
             <section className="flex-1 overflow-y-auto">
-              <div className="pt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
                 <header className="flex">
                   <h1 className="flex-1 text-2xl font-bold text-gray-900">
                     Your NFTs
@@ -23,7 +23,7 @@ const Profile = () => {
                   <div className="hidden sm:block">
                     <div className="flex items-center border-b border-gray-200">
                       <nav
-                        className="flex-1 -mb-px flex space-x-6 xl:space-x-8"
+                        className="-mb-px flex flex-1 space-x-6 xl:space-x-8"
                         aria-label="Tabs"
                       >
                         {TABS.map((tab) => (
@@ -34,8 +34,8 @@ const Profile = () => {
                             className={classNames(
                               tab.current
                                 ? "border-indigo-500 text-indigo-600"
-                                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                              "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                              "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
                             )}
                           >
                             {tab.name}
@@ -59,9 +59,9 @@ const Profile = () => {
                         <div
                           className={classNames(
                             true
-                              ? "ring-2 ring-offset-2 ring-indigo-500"
-                              : "focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500",
-                            "group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden"
+                              ? "ring-2 ring-indigo-500 ring-offset-2"
+                              : "focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100",
+                            "aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100"
                           )}
                         >
                           <img
@@ -69,7 +69,7 @@ const Profile = () => {
                             alt=""
                             className={classNames(
                               true ? "" : "group-hover:opacity-75",
-                              "object-cover pointer-events-none"
+                              "pointer-events-none object-cover"
                             )}
                           />
                           <button
@@ -81,7 +81,7 @@ const Profile = () => {
                             </span>
                           </button>
                         </div>
-                        <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
+                        <p className="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
                           {name}
                         </p>
                       </li>
@@ -92,11 +92,11 @@ const Profile = () => {
             </section>
 
             {/* Details sidebar */}
-            <aside className="hidden w-96 bg-white p-8 border-l border-gray-200 overflow-y-auto lg:block">
+            <aside className="hidden w-96 overflow-y-auto border-l border-gray-200 bg-white p-8 lg:block">
               {true && (
-                <div className="pb-16 space-y-6">
+                <div className="space-y-6 pb-16">
                   <div>
-                    <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
+                    <div className="aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg">
                       <img
                         src={nfts[0].image}
                         alt=""
@@ -117,14 +117,14 @@ const Profile = () => {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900">Information</h3>
-                    <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
+                    <dl className="mt-2 divide-y divide-gray-200 border-t border-b border-gray-200">
                       {nfts[0].attributes.map((attr) => (
                         <div
                           key={attr.trait_type}
-                          className="py-3 flex justify-between text-sm font-medium"
+                          className="flex justify-between py-3 text-sm font-medium"
                         >
                           <dt className="text-gray-500">{attr.trait_type}: </dt>
-                          <dd className="text-gray-900 text-right">
+                          <dd className="text-right text-gray-900">
                             {attr.value}
                           </dd>
                         </div>
@@ -135,14 +135,14 @@ const Profile = () => {
                   <div className="flex">
                     <button
                       type="button"
-                      className="flex-1 bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="flex-1 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Download Image
                     </button>
                     <button
                       onClick={() => {}}
                       type="button"
-                      className="flex-1 ml-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="ml-3 flex-1 rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Transfer?
                     </button>

@@ -44,7 +44,7 @@ const Navbar = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="hidden lg:block h-10 w-auto"
+                    className="hidden h-10 w-auto lg:block"
                     src="/images/page_logo.png"
                     alt="Workflow"
                   />
@@ -55,7 +55,7 @@ const Navbar = () => {
                       <ActiveLink
                         key={name}
                         href={href}
-                        className="text-gray-400 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                        className="rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         activeClassName="bg-gray-900 text-indigo-400"
                       >
                         {name}
@@ -65,8 +65,8 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div className="text-gray-300 self-center mr-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
+                <div className="mr-2 self-center text-gray-300">
+                  <span className="inline-flex items-center rounded-md bg-purple-100 px-2.5 py-0.5 text-sm font-medium text-purple-800">
                     <svg
                       className="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400"
                       fill="currentColor"
@@ -96,7 +96,7 @@ const Navbar = () => {
                   as={ActiveLink}
                   activeClassName="bg-gray-900 text-indigo-400"
                   className={
-                    "text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    "block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   }
                 >
                   {item.name}

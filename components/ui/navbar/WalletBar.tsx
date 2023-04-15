@@ -19,7 +19,7 @@ const WalletBar = ({ isInstalled, isLoading, connect, account }: Props) => {
         <button
           onClick={() => {}}
           type="button"
-          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center rounded-full border border-transparent bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Loading...
         </button>
@@ -29,9 +29,9 @@ const WalletBar = ({ isInstalled, isLoading, connect, account }: Props) => {
 
   if (account) {
     return (
-      <Menu as="div" className="ml-3 relative">
+      <Menu as="div" className="relative ml-3">
         <div>
-          <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
             <span className="sr-only">Open user menu</span>
             <img
               className="h-8 w-8 rounded-full"
@@ -41,12 +41,12 @@ const WalletBar = ({ isInstalled, isLoading, connect, account }: Props) => {
           </Menu.Button>
         </div>
 
-        <Menu.Items className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <Menu.Item>
             {() => (
               <button
                 disabled={true}
-                className="disabled:text-gray-500 text-xs block px-4 pt-2 text-gray-700"
+                className="block px-4 pt-2 text-xs text-gray-700 disabled:text-gray-500"
               >
                 {shortenWalletAddress(account)}
               </button>
@@ -77,7 +77,7 @@ const WalletBar = ({ isInstalled, isLoading, connect, account }: Props) => {
             connect();
           }}
           type="button"
-          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center rounded-full border border-transparent bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Connect Wallet
         </button>
@@ -91,7 +91,7 @@ const WalletBar = ({ isInstalled, isLoading, connect, account }: Props) => {
             window.open("https://metamask.io", "_blank");
           }}
           type="button"
-          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center rounded-full border border-transparent bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           No Wallet
         </button>

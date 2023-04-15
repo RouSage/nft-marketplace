@@ -8,7 +8,7 @@ type Props = {
 };
 
 const NftList = ({ nfts }: Props) => (
-  <section className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
+  <section className="mx-auto mt-12 grid max-w-lg gap-5 lg:max-w-none lg:grid-cols-3">
     {nfts?.map(({ meta }) => (
       <NftItem
         key={meta.name}
