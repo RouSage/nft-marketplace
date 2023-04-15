@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import { useAccount, useNetwork } from "components/hooks/web3";
@@ -43,11 +44,13 @@ const Navbar = () => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="hidden h-10 w-auto lg:block"
-                    src="/images/page_logo.png"
-                    alt="Workflow"
-                  />
+                  <Link href={Routes.Marketplace}>
+                    <img
+                      className="hidden h-10 w-auto lg:block"
+                      src="/images/page_logo.png"
+                      alt="Workflow"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">

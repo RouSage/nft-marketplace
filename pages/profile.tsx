@@ -1,12 +1,27 @@
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 
+import { useOwnedNfts } from "components/hooks/web3";
 import { BaseLayout } from "components/ui";
-import nfts from "content/meta.json";
-import { NftMeta } from "types/nft";
+import { Nft } from "types/nft";
 
 const TABS = [{ name: "Your Collection", href: "#", current: true }];
 
 const Profile = () => {
+  const { nfts } = useOwnedNfts();
+
+  const [activeNft, setActiveNft] = useState<Nft | null>(null);
+
+  useEffect(() => {
+    if (nfts.data && nfts.data.length) {
+      setActiveNft(nfts.data[0]);
+    }
+
+    return () => {
+      setActiveNft(null);
+    };
+  }, [nfts.data]);
+
   return (
     <BaseLayout>
       <div className="flex h-full">
@@ -32,10 +47,10 @@ const Profile = () => {
                             href={tab.href}
                             aria-current={tab.current ? "page" : undefined}
                             className={classNames(
+                              "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium",
                               tab.current
                                 ? "border-indigo-500 text-indigo-600"
-                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                              "whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                             )}
                           >
                             {tab.name}
@@ -54,38 +69,49 @@ const Profile = () => {
                     role="list"
                     className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
                   >
-                    {(nfts as NftMeta[]).map(({ image, name }) => (
-                      <li key={name} onClick={() => {}} className="relative">
-                        <div
-                          className={classNames(
-                            true
-                              ? "ring-2 ring-indigo-500 ring-offset-2"
-                              : "focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100",
-                            "aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100"
-                          )}
+                    {nfts.data?.map((nft) => {
+                      const { tokenId, meta } = nft;
+                      const isActive = activeNft?.tokenId === tokenId;
+
+                      return (
+                        <li
+                          key={tokenId}
+                          onClick={() => {
+                            setActiveNft(nft);
+                          }}
+                          className="relative cursor-pointer"
                         >
-                          <img
-                            src={image}
-                            alt=""
+                          <div
                             className={classNames(
-                              true ? "" : "group-hover:opacity-75",
-                              "pointer-events-none object-cover"
+                              "aspect-w-10 aspect-h-7 group block w-full overflow-hidden rounded-lg bg-gray-100",
+                              isActive
+                                ? "ring-2 ring-indigo-500 ring-offset-2"
+                                : "focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"
                             )}
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-0 focus:outline-none"
                           >
-                            <span className="sr-only">
-                              View details for {name}
-                            </span>
-                          </button>
-                        </div>
-                        <p className="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
-                          {name}
-                        </p>
-                      </li>
-                    ))}
+                            <img
+                              src={meta.image}
+                              alt=""
+                              className={classNames(
+                                "pointer-events-none object-cover",
+                                { "group-hover:opacity-75": isActive }
+                              )}
+                            />
+                            <button
+                              type="button"
+                              className="absolute inset-0 focus:outline-none"
+                            >
+                              <span className="sr-only">
+                                View details for {meta.name}
+                              </span>
+                            </button>
+                          </div>
+                          <p className="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">
+                            {meta.name}
+                          </p>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </section>
               </div>
@@ -93,12 +119,12 @@ const Profile = () => {
 
             {/* Details sidebar */}
             <aside className="hidden w-96 overflow-y-auto border-l border-gray-200 bg-white p-8 lg:block">
-              {true && (
+              {activeNft && (
                 <div className="space-y-6 pb-16">
                   <div>
                     <div className="aspect-w-10 aspect-h-7 block w-full overflow-hidden rounded-lg">
                       <img
-                        src={nfts[0].image}
+                        src={activeNft.meta.image}
                         alt=""
                         className="object-cover"
                       />
@@ -107,10 +133,10 @@ const Profile = () => {
                       <div>
                         <h2 className="text-lg font-medium text-gray-900">
                           <span className="sr-only">Details for </span>
-                          {nfts[0].name}
+                          {activeNft.meta.name}
                         </h2>
                         <p className="text-sm font-medium text-gray-500">
-                          {nfts[0].description}
+                          {activeNft.meta.description}
                         </p>
                       </div>
                     </div>
@@ -118,17 +144,19 @@ const Profile = () => {
                   <div>
                     <h3 className="font-medium text-gray-900">Information</h3>
                     <dl className="mt-2 divide-y divide-gray-200 border-t border-b border-gray-200">
-                      {nfts[0].attributes.map((attr) => (
-                        <div
-                          key={attr.trait_type}
-                          className="flex justify-between py-3 text-sm font-medium"
-                        >
-                          <dt className="text-gray-500">{attr.trait_type}: </dt>
-                          <dd className="text-right text-gray-900">
-                            {attr.value}
-                          </dd>
-                        </div>
-                      ))}
+                      {activeNft.meta.attributes.map(
+                        ({ trait_type, value }) => (
+                          <div
+                            key={trait_type}
+                            className="flex justify-between py-3 text-sm font-medium"
+                          >
+                            <dt className="text-gray-500">{trait_type}: </dt>
+                            <dd className="text-right text-gray-900">
+                              {value}
+                            </dd>
+                          </div>
+                        )
+                      )}
                     </dl>
                   </div>
 

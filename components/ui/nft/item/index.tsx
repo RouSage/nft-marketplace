@@ -7,9 +7,10 @@ type Props = {
   image: string;
   description: string;
   attributes: NftAttribute[];
+  price: number;
 };
 
-const NftItem = ({ image, name, description, attributes }: Props) => (
+const NftItem = ({ image, name, description, attributes, price }: Props) => (
   <article className="flex flex-col overflow-hidden rounded-lg shadow-lg">
     <div className="flex-shrink-0">
       <img className={`h-full w-full object-cover`} src={image} alt={name} />
@@ -28,13 +29,12 @@ const NftItem = ({ image, name, description, attributes }: Props) => (
             <dt className="order-2 text-sm font-medium text-gray-500">Price</dt>
             <dd className="order-1 text-xl font-extrabold text-indigo-600">
               <div className="flex items-center justify-center">
-                100
+                {price}
                 <img
                   className="h-6"
                   src="/images/small-eth.webp"
                   alt="ether icon"
                 />
-                ETH
               </div>
             </dd>
           </div>
