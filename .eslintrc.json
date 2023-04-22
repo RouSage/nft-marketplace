@@ -7,7 +7,6 @@
     "prettier"
   ],
   "rules": {
-    "no-unused-vars": "warn",
     "import/order": [
       "error",
       {

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 
 import { NftAttribute } from "types/nft";
 
@@ -8,12 +8,20 @@ type Props = {
   description: string;
   attributes: NftAttribute[];
   price: number;
+  onBuy: () => void;
 };
 
-const NftItem = ({ image, name, description, attributes, price }: Props) => (
+const NftItem = ({
+  image,
+  name,
+  description,
+  attributes,
+  price,
+  onBuy,
+}: Props) => (
   <article className="flex flex-col overflow-hidden rounded-lg shadow-lg">
     <div className="flex-shrink-0">
-      <img className={`h-full w-full object-cover`} src={image} alt={name} />
+      <img className="h-full w-full object-cover" src={image} alt={name} />
     </div>
     <div className="flex flex-1 flex-col justify-between bg-white p-6">
       <header className="flex-1">
@@ -54,6 +62,7 @@ const NftItem = ({ image, name, description, attributes, price }: Props) => (
         <button
           type="button"
           className="mr-2 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
+          onClick={onBuy}
         >
           Buy
         </button>
@@ -68,4 +77,4 @@ const NftItem = ({ image, name, description, attributes, price }: Props) => (
   </article>
 );
 
-export default memo(NftItem);
+export default NftItem;
