@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
 import { useOwnedNfts } from "components/hooks/web3";
@@ -7,7 +8,7 @@ import { Nft } from "types/nft";
 
 const TABS = [{ name: "Your Collection", href: "#", current: true }];
 
-const Profile = () => {
+const Profile: NextPage = () => {
   const { nfts } = useOwnedNfts();
 
   const [activeNft, setActiveNft] = useState<Nft | null>(null);
@@ -168,11 +169,13 @@ const Profile = () => {
                       Download Image
                     </button>
                     <button
-                      onClick={() => {}}
+                      onClick={() => {
+                        nfts.listNft(activeNft.tokenId, activeNft.price);
+                      }}
                       type="button"
                       className="ml-3 flex-1 rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                      Transfer?
+                      List Nft
                     </button>
                   </div>
                 </div>
