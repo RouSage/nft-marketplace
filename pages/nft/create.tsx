@@ -4,10 +4,13 @@ import classNames from "classnames";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
 
+import { useWeb3 } from "components/providers/web3";
 import { BaseLayout } from "components/ui";
 import { NftMeta } from "types/nft";
 
 const NftCreate = () => {
+  const { ethereum } = useWeb3();
+
   const [nftURI, setNftURI] = useState("");
   const [hasURI, setHasURI] = useState(false);
   const [nftMeta, setNftMeta] = useState<NftMeta>({
@@ -57,6 +60,25 @@ const NftCreate = () => {
   const handleCreateNft = async () => {
     try {
       const messageToSign = await axios.get("/api/verify");
+      const accounts = (await ethereum?.request({
+        method: "eth_requestAccounts",
+      })) as string[];
+      const account = accounts[0];
+
+      const signedData = await ethereum?.request({
+        method: "personal_sign",
+        params: [
+          JSON.stringify(messageToSign.data),
+          account,
+          messageToSign.data.id,
+        ],
+      });
+
+      await axios.post("/api/verify", {
+        address: account,
+        signature: signedData,
+        nft: nftMeta,
+      });
     } catch (error: any) {
       console.error(error.message);
     }
