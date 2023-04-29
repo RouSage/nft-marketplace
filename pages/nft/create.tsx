@@ -1,15 +1,57 @@
 import { Switch } from "@headlessui/react";
 import classNames from "classnames";
 import Link from "next/link";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { BaseLayout } from "components/ui";
-
-const ATTRIBUTES = ["health", "attack", "speed"];
+import { NftMeta } from "types/nft";
 
 const NftCreate = () => {
   const [nftURI, setNftURI] = useState("");
   const [hasURI, setHasURI] = useState(false);
+  const [nftMeta, setNftMeta] = useState<NftMeta>({
+    name: "",
+    description: "",
+    image: "",
+    attributes: [
+      {
+        trait_type: "attack",
+        value: "0",
+      },
+      {
+        trait_type: "health",
+        value: "0",
+      },
+      {
+        trait_type: "speed",
+        value: "0",
+      },
+    ],
+  });
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setNftMeta((prevMeta) => ({ ...prevMeta, [name]: value }));
+  };
+
+  const handleAttributeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    const attributeIdx = nftMeta.attributes.findIndex(
+      ({ trait_type }) => trait_type === name
+    );
+    if (attributeIdx !== -1) {
+      const newAttributes = [...nftMeta.attributes];
+      newAttributes[attributeIdx].value = value;
+
+      setNftMeta((prevMeta) => ({
+        ...prevMeta,
+        attributes: newAttributes,
+      }));
+    }
+  };
 
   return (
     <BaseLayout>
@@ -24,16 +66,16 @@ const NftCreate = () => {
                 checked={hasURI}
                 onChange={() => setHasURI(!hasURI)}
                 className={classNames(
-                  `${hasURI ? "bg-indigo-900" : "bg-indigo-700"}`,
-                  "relative inline-flex h-[28px] w-[64px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75"
+                  "relative inline-flex h-[28px] w-[64px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75",
+                  hasURI ? "bg-indigo-900" : "bg-indigo-700"
                 )}
               >
                 <span className="sr-only">Use setting</span>
                 <span
                   aria-hidden="true"
                   className={classNames(
-                    `${hasURI ? "translate-x-9" : "translate-x-0"}`,
-                    "pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"
+                    "pointer-events-none inline-block h-[24px] w-[24px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out",
+                    hasURI ? "translate-x-9" : "translate-x-0"
                   )}
                 />
               </Switch>
@@ -153,6 +195,8 @@ const NftCreate = () => {
                           id="name"
                           className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="My Nice NFT"
+                          value={nftMeta.name}
+                          onChange={handleChange}
                         />
                       </div>
                     </div>
@@ -170,7 +214,8 @@ const NftCreate = () => {
                           rows={3}
                           className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="Some nft description..."
-                          defaultValue={""}
+                          value={nftMeta.description}
+                          onChange={handleChange}
                         />
                       </div>
                       <p className="mt-2 text-sm text-gray-500">
@@ -187,7 +232,7 @@ const NftCreate = () => {
                     ) : (
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
-                          Cover photo
+                          Image
                         </label>
                         <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                           <div className="space-y-1 text-center">
@@ -228,22 +273,24 @@ const NftCreate = () => {
                       </div>
                     )}
                     <div className="grid grid-cols-6 gap-6">
-                      {ATTRIBUTES.map((attribute) => (
+                      {nftMeta.attributes.map(({ trait_type, value }) => (
                         <div
-                          key={attribute}
+                          key={trait_type}
                           className="col-span-6 sm:col-span-6 lg:col-span-2"
                         >
                           <label
-                            htmlFor={attribute}
+                            htmlFor={trait_type}
                             className="block text-sm font-medium text-gray-700"
                           >
-                            {attribute}
+                            {trait_type}
                           </label>
                           <input
                             type="text"
-                            name={attribute}
-                            id={attribute}
+                            name={trait_type}
+                            id={trait_type}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            value={value}
+                            onChange={handleAttributeChange}
                           />
                         </div>
                       ))}
@@ -256,8 +303,11 @@ const NftCreate = () => {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      onClick={() => {
+                        console.log(nftMeta);
+                      }}
                     >
-                      Save
+                      List
                     </button>
                   </div>
                 </div>
