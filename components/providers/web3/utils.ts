@@ -1,4 +1,5 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import axios from "axios";
 import { Contract, providers } from "ethers";
 
 import { setupHooks, Web3Hooks } from "components/hooks/web3/setupHooks";
@@ -50,8 +51,7 @@ export const loadContract = async (
   }
 
   // API request goes to `./public/contracts/${name}.json`
-  const response = await fetch(`/contracts/${name}.json`);
-  const Artifact = await response.json();
+  const { data: Artifact } = await axios.get(`/contracts/${name}.json`);
 
   if (!Artifact.networks[NETWORK_ID].address) {
     return Promise.reject(`Contract [${name}] cannot be loaded!`);

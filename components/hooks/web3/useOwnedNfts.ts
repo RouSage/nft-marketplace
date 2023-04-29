@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback } from "react";
 import useSWR from "swr";
@@ -27,8 +28,7 @@ export const hookFactory: OwnedNftsHookFactory =
         for (const nft of coreNfts) {
           const tokenURI = await contract.tokenURI(nft.tokenId);
 
-          const metaRes = await fetch(tokenURI);
-          const meta: NftMeta = await metaRes.json();
+          const { data: meta } = await axios.get<NftMeta>(tokenURI);
 
           nfts.push({
             price: parseFloat(ethers.utils.formatEther(nft.price)),

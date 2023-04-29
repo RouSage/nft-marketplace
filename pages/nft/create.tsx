@@ -1,4 +1,5 @@
 import { Switch } from "@headlessui/react";
+import axios from "axios";
 import classNames from "classnames";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
@@ -50,6 +51,14 @@ const NftCreate = () => {
         ...prevMeta,
         attributes: newAttributes,
       }));
+    }
+  };
+
+  const handleCreateNft = async () => {
+    try {
+      const messageToSign = await axios.get("/api/verify");
+    } catch (error: any) {
+      console.error(error.message);
     }
   };
 
@@ -303,9 +312,7 @@ const NftCreate = () => {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                      onClick={() => {
-                        console.log(nftMeta);
-                      }}
+                      onClick={handleCreateNft}
                     >
                       List
                     </button>
