@@ -6,10 +6,15 @@ import { ChangeEvent, useState } from "react";
 
 import { useWeb3 } from "components/providers/web3";
 import { BaseLayout } from "components/ui";
+import { useCreateNft } from "hooks/nft/useCreateNft";
+import { useCreateNftImage } from "hooks/nft/useCreateNftImage";
+import { SessionMessage } from "pages/api/utils";
 import { NftMeta } from "types/nft";
 
 const NftCreate = () => {
   const { ethereum } = useWeb3();
+  const { createNft } = useCreateNft();
+  const { createNftImage } = useCreateNftImage();
 
   const [nftURI, setNftURI] = useState("");
   const [hasURI, setHasURI] = useState(false);
@@ -32,6 +37,25 @@ const NftCreate = () => {
       },
     ],
   });
+
+  const getSignedData = async () => {
+    const messageToSign = await axios.get<SessionMessage>("/api/verify");
+    const accounts = (await ethereum?.request({
+      method: "eth_requestAccounts",
+    })) as string[];
+    const account = accounts[0];
+
+    const signedData = await ethereum?.request<string>({
+      method: "personal_sign",
+      params: [
+        JSON.stringify(messageToSign.data),
+        account,
+        messageToSign.data.id,
+      ],
+    });
+
+    return { signedData, account };
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,31 +81,32 @@ const NftCreate = () => {
     }
   };
 
-  const handleCreateNft = async () => {
-    try {
-      const messageToSign = await axios.get("/api/verify");
-      const accounts = (await ethereum?.request({
-        method: "eth_requestAccounts",
-      })) as string[];
-      const account = accounts[0];
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { target } = e;
 
-      const signedData = await ethereum?.request({
-        method: "personal_sign",
-        params: [
-          JSON.stringify(messageToSign.data),
-          account,
-          messageToSign.data.id,
-        ],
-      });
+    if (!target.files || !target.files.length) {
+      console.error("Select a file");
 
-      await axios.post("/api/verify", {
-        address: account,
-        signature: signedData,
-        nft: nftMeta,
-      });
-    } catch (error: any) {
-      console.error(error.message);
+      return;
     }
+
+    const file = target.files[0];
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+
+    const { account, signedData } = await getSignedData();
+    createNftImage({
+      address: account,
+      bytes,
+      contentType: file.type,
+      fileName: file.name.replace(/\.[^\/.]+$/, ""),
+      signature: signedData,
+    });
+  };
+
+  const handleCreateNft = async () => {
+    const { account, signedData } = await getSignedData();
+    createNft({ address: account, nft: nftMeta, signature: signedData });
   };
 
   return (
@@ -292,6 +317,7 @@ const NftCreate = () => {
                                   name="file-upload"
                                   type="file"
                                   className="sr-only"
+                                  onChange={handleImageChange}
                                 />
                               </label>
                               <p className="pl-1">or drag and drop</p>

@@ -2,7 +2,7 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";
 import { Contract, providers } from "ethers";
 
-import { setupHooks, Web3Hooks } from "components/hooks/web3/setupHooks";
+import { setupHooks, Web3Hooks } from "hooks/web3/setupHooks";
 import { Web3Dependencies } from "types/hooks";
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;

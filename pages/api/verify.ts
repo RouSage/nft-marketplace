@@ -2,21 +2,24 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
-import { NftMeta } from "types/nft";
+import { NftMetaPayload } from "types/api";
 
 import {
   contractAddress,
   addressCheckMiddleware,
   withIronSession,
   PINATA_JWT,
+  SessionMessage,
 } from "./utils";
 
-async function verifyRoute(req: NextApiRequest, res: NextApiResponse) {
+interface VerifyNftMetaReq extends NextApiRequest {
+  body: NftMetaPayload;
+}
+
+async function verifyRoute(req: VerifyNftMetaReq, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { body } = req;
-
-      const nft = body.nft as NftMeta;
+      const { nft } = req.body;
 
       if (
         // !nft.image ||
@@ -54,7 +57,7 @@ async function verifyRoute(req: NextApiRequest, res: NextApiResponse) {
     }
   } else if (req.method === "GET") {
     try {
-      const message = {
+      const message: SessionMessage = {
         contractAddress,
         id: uuidv4(),
       };

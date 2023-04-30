@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useListedNfts } from "components/hooks/web3";
 import { NftItem } from "components/ui";
+import { useListedNfts } from "hooks/web3";
 
 const NftList = () => {
   const { nfts } = useListedNfts();

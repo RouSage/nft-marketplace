@@ -3,8 +3,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { useAccount, useNetwork } from "components/hooks/web3";
 import ActiveLink from "components/ui/link";
+import { useAccount, useNetwork } from "hooks/web3";
 import { Routes } from "routes";
 
 import WalletBar from "./WalletBar";

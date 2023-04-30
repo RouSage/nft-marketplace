@@ -6,11 +6,10 @@ import {
   pubToAddress,
   toBuffer,
 } from "ethereumjs-util";
-import { ethers } from "ethers";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
-import { NftMarketContract } from "types/nftMarketContract";
+import { VerifyPayload } from "types/api";
 
 import contract from "../../public/contracts/NftMarket.json";
 
@@ -19,7 +18,6 @@ type NETWORK = typeof contract.networks;
 const TARGET_NETWORK = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
 export const PINATA_JWT = process.env.PINATA_JWT as string;
 
-const abi = contract.abi;
 export const contractAddress = contract.networks[TARGET_NETWORK].address;
 
 export const withIronSession = (handler: NextApiHandler) => {
@@ -29,9 +27,12 @@ export const withIronSession = (handler: NextApiHandler) => {
   });
 };
 
-// TODO: Properly type `req`
+interface AddressCheckReq extends NextApiRequest {
+  body: VerifyPayload;
+}
+
 export const addressCheckMiddleware = async (
-  req: NextApiRequest,
+  req: AddressCheckReq,
   res: NextApiResponse
 ) => {
   return new Promise(async (resolve, reject) => {
@@ -51,7 +52,7 @@ export const addressCheckMiddleware = async (
     }${JSON.stringify(message)}`;
     nonce = keccak(Buffer.from(nonce, "utf-8"));
 
-    const { r, s, v } = fromRpcSig(req.body.signature);
+    const { r, s, v } = fromRpcSig(req.body.signature as string);
     const pubKey = ecrecover(toBuffer(nonce), v, r, s);
     const addrBuffer = pubToAddress(pubKey);
     const address = bufferToHex(addrBuffer);
@@ -64,11 +65,13 @@ export const addressCheckMiddleware = async (
   });
 };
 
+export type SessionMessage = {
+  contractAddress: string;
+  id: string;
+};
+
 declare module "iron-session" {
   interface IronSessionData {
-    "message-session"?: {
-      contractAddress: string;
-      id: string;
-    };
+    "message-session"?: SessionMessage;
   }
 }

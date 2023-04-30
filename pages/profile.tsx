@@ -2,8 +2,8 @@ import classNames from "classnames";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
-import { useOwnedNfts } from "components/hooks/web3";
 import { BaseLayout } from "components/ui";
+import { useOwnedNfts } from "hooks/web3";
 import { Nft } from "types/nft";
 
 const TABS = [{ name: "Your Collection", href: "#", current: true }];
