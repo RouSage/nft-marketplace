@@ -3,8 +3,8 @@ import useSWRMutation from "swr/mutation";
 
 import { NftMetaPayload } from "types/api";
 
-const createNft = async (url: string, { arg }: { arg: NftMetaPayload }) => {
-  await axios.post(url, arg);
+const createNft = (url: string, { arg }: { arg: NftMetaPayload }) => {
+  axios.post(url, arg);
 };
 
 export const useCreateNft = () => {

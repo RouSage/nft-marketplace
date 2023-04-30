@@ -3,11 +3,8 @@ import useSWRMutation from "swr/mutation";
 
 import { NftImagePayload } from "types/api";
 
-const createNftImage = async (
-  url: string,
-  { arg }: { arg: NftImagePayload }
-) => {
-  await axios.post(url, arg);
+const createNftImage = (url: string, { arg }: { arg: NftImagePayload }) => {
+  axios.post(url, arg);
 };
 
 export const useCreateNftImage = () => {

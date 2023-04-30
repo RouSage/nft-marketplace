@@ -97,10 +97,10 @@ const NftCreate = () => {
     const { account, signedData } = await getSignedData();
     createNftImage({
       address: account,
+      signature: signedData,
       bytes,
       contentType: file.type,
       fileName: file.name.replace(/\.[^\/.]+$/, ""),
-      signature: signedData,
     });
   };
 
