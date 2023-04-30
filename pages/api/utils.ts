@@ -17,6 +17,7 @@ import contract from "../../public/contracts/NftMarket.json";
 type NETWORK = typeof contract.networks;
 
 const TARGET_NETWORK = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
+export const PINATA_JWT = process.env.PINATA_JWT as string;
 
 const abi = contract.abi;
 export const contractAddress = contract.networks[TARGET_NETWORK].address;

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
@@ -7,6 +8,7 @@ import {
   contractAddress,
   addressCheckMiddleware,
   withIronSession,
+  PINATA_JWT,
 } from "./utils";
 
 async function verifyRoute(req: NextApiRequest, res: NextApiResponse) {
@@ -29,7 +31,24 @@ async function verifyRoute(req: NextApiRequest, res: NextApiResponse) {
 
       await addressCheckMiddleware(req, res);
 
-      return res.status(200).send({ message: "Nft has been created" });
+      // https://docs.pinata.cloud/pinata-api/pinning/pin-json
+      const jsonRes = await axios.post(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        {
+          pinataMetadata: {
+            name: uuidv4(),
+          },
+          pinataContent: nft,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${PINATA_JWT}`,
+          },
+        }
+      );
+
+      return res.status(200).send(jsonRes.data);
     } catch {
       return res.status(422).send({ message: "Cannot create JSON!" });
     }
