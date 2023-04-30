@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
-import { NftMetaPayload } from "types/api";
+import { NftMetaPayload, PinataResponse } from "types/api";
 
 import {
   contractAddress,
@@ -22,7 +22,7 @@ async function verifyRoute(req: VerifyNftMetaReq, res: NextApiResponse) {
       const { nft } = req.body;
 
       if (
-        // !nft.image ||
+        !nft.image ||
         !nft.name ||
         !nft.description ||
         !nft.attributes.length
@@ -35,7 +35,7 @@ async function verifyRoute(req: VerifyNftMetaReq, res: NextApiResponse) {
       await addressCheckMiddleware(req, res);
 
       // https://docs.pinata.cloud/pinata-api/pinning/pin-json
-      const jsonRes = await axios.post(
+      const jsonRes = await axios.post<PinataResponse>(
         "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         {
           pinataMetadata: {

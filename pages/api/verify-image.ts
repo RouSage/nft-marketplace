@@ -3,7 +3,7 @@ import FormData from "form-data";
 import { NextApiRequest, NextApiResponse } from "next";
 import { v4 as uuidv4 } from "uuid";
 
-import { NftImagePayload } from "types/api";
+import { NftImagePayload, PinataResponse } from "types/api";
 
 import { PINATA_JWT, addressCheckMiddleware, withIronSession } from "./utils";
 
@@ -30,7 +30,7 @@ async function verifyRoute(req: VerifyNftImageReq, res: NextApiResponse) {
     });
 
     // https://docs.pinata.cloud/pinata-api/pinning/pin-file-or-directory#uploading-and-pinning-a-single-file
-    const jsonRes = await axios.post(
+    const jsonRes = await axios.post<PinataResponse>(
       "https://api.pinata.cloud/pinning/pinFileToIPFS",
       formData,
       {

@@ -1,6 +1,7 @@
 import { Switch } from "@headlessui/react";
 import axios from "axios";
 import classNames from "classnames";
+import { NextPage } from "next";
 import Link from "next/link";
 import { ChangeEvent, useState } from "react";
 
@@ -11,10 +12,17 @@ import { useCreateNftImage } from "hooks/nft/useCreateNftImage";
 import { SessionMessage } from "pages/api/utils";
 import { NftMeta } from "types/nft";
 
-const NftCreate = () => {
+const PINATA_DOMAIN = process.env.NEXT_PUBLIC_PINATA_DOMAIN;
+
+const NftCreate: NextPage = () => {
   const { ethereum } = useWeb3();
   const { createNft } = useCreateNft();
-  const { createNftImage } = useCreateNftImage();
+  const { createNftImage } = useCreateNftImage(({ IpfsHash }) => {
+    setNftMeta((prevMeta) => ({
+      ...prevMeta,
+      image: `${PINATA_DOMAIN}/ipfs/${IpfsHash}`,
+    }));
+  });
 
   const [nftURI, setNftURI] = useState("");
   const [hasURI, setHasURI] = useState(false);
@@ -278,11 +286,10 @@ const NftCreate = () => {
                         Brief description of NFT
                       </p>
                     </div>
-                    {/* Has Image? */}
-                    {false ? (
+                    {!!nftMeta.image ? (
                       <img
-                        src="https://eincode.mypinata.cloud/ipfs/QmaQYCrX9Fg2kGijqapTYgpMXV7QPPzMwGrSRfV9TvTsfM/Creature_1.png"
-                        alt=""
+                        src={nftMeta.image}
+                        alt="nft image"
                         className="h-40"
                       />
                     ) : (
