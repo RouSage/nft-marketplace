@@ -29,7 +29,9 @@ export const hookFactory: ListedNftsHookFactory =
           const item = coreNfts[i];
           const tokenURI = await contract.tokenURI(item.tokenId);
 
-          const { data: meta } = await axios.get<NftMeta>(tokenURI);
+          const { data: meta } = await axios.get<NftMeta>(tokenURI, {
+            headers: { Accept: "text/plain" },
+          });
 
           nfts.push({
             price: parseFloat(ethers.utils.formatEther(item.price)),

@@ -35,7 +35,7 @@ async function verifyRoute(req: VerifyNftMetaReq, res: NextApiResponse) {
       await addressCheckMiddleware(req, res);
 
       // https://docs.pinata.cloud/pinata-api/pinning/pin-json
-      const jsonRes = await axios.post<PinataResponse>(
+      const { data } = await axios.post<PinataResponse>(
         "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         {
           pinataMetadata: {
@@ -51,7 +51,7 @@ async function verifyRoute(req: VerifyNftMetaReq, res: NextApiResponse) {
         }
       );
 
-      return res.status(200).send(jsonRes.data);
+      return res.status(200).send(data);
     } catch {
       return res.status(422).send({ message: "Cannot create JSON!" });
     }
