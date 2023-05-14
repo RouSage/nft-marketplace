@@ -1,4 +1,5 @@
 import { Switch } from "@headlessui/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import classNames from "classnames";
 import { ethers } from "ethers";
@@ -10,6 +11,7 @@ import { useWeb3 } from "components/providers/web3";
 import { BaseLayout } from "components/ui";
 import { useCreateNftImage } from "hooks/nft/useCreateNftImage";
 import { useUploadMetadata } from "hooks/nft/useUploadMetadata";
+import { useNetwork } from "hooks/web3";
 import { SessionMessage } from "pages/api/utils";
 import { NftMeta } from "types/nft";
 
@@ -18,6 +20,7 @@ const ALLOWED_FIELDS = ["name", "description", "image", "attributes"];
 
 const NftCreate: NextPage = () => {
   const { ethereum, contract } = useWeb3();
+  const { network } = useNetwork();
 
   const [nftURI, setNftURI] = useState("");
   const [hasURI, setHasURI] = useState(false);
@@ -153,6 +156,35 @@ const NftCreate: NextPage = () => {
       console.error(e);
     }
   };
+
+  if (!network.isConnectedToNetwork) {
+    return (
+      <BaseLayout>
+        <section className="mt-10 rounded-md bg-yellow-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <ExclamationTriangleIcon
+                className="h-5 w-5 text-yellow-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800">
+                Attention needed
+              </h3>
+              <div className="mt-2 text-sm text-yellow-700">
+                <p>
+                  {network.isLoading
+                    ? "Loading..."
+                    : `Connect to ${network.targetNetwork}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </BaseLayout>
+    );
+  }
 
   return (
     <BaseLayout>
