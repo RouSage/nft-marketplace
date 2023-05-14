@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback } from "react";
+import { toast } from "react-toastify";
 import useSWR from "swr";
 
 import { CryptoHookFactory } from "types/hooks";
@@ -55,8 +56,9 @@ export const hookFactory: ListedNftsHookFactory =
           });
           await result?.wait();
 
-          alert("You have bought Nft. See profile page.");
+          toast.success("You have bought Nft. See profile page.");
         } catch (error) {
+          toast.error("Processing error");
           console.error(error);
         }
       },

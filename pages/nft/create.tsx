@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { ethers } from "ethers";
 import { NextPage } from "next";
 import { ChangeEvent, useState } from "react";
+import { toast } from "react-toastify";
 
 import { useWeb3 } from "components/providers/web3";
 import { BaseLayout } from "components/ui";
@@ -41,15 +42,19 @@ const NftCreate: NextPage = () => {
     ],
   });
 
-  const { createNftImage } = useCreateNftImage(({ IpfsHash }) => {
-    setNftMeta((prevMeta) => ({
-      ...prevMeta,
-      image: `${PINATA_DOMAIN}/ipfs/${IpfsHash}`,
-    }));
-  });
-  const { uploadMetadata } = useUploadMetadata(({ IpfsHash }) => {
-    setNftURI(`${PINATA_DOMAIN}/ipfs/${IpfsHash}`);
-  });
+  const { isCreatingNftImage, createNftImage } = useCreateNftImage(
+    ({ IpfsHash }) => {
+      setNftMeta((prevMeta) => ({
+        ...prevMeta,
+        image: `${PINATA_DOMAIN}/ipfs/${IpfsHash}`,
+      }));
+    }
+  );
+  const { isUploadingMetadata, uploadMetadata } = useUploadMetadata(
+    ({ IpfsHash }) => {
+      setNftURI(`${PINATA_DOMAIN}/ipfs/${IpfsHash}`);
+    }
+  );
 
   const getSignedData = async () => {
     const messageToSign = await axios.get<SessionMessage>("/api/verify");
@@ -143,7 +148,7 @@ const NftCreate: NextPage = () => {
       );
 
       await transaction?.wait();
-      alert("Nft was created!");
+      toast.success("NFT listed");
     } catch (e) {
       console.error(e);
     }
@@ -405,6 +410,7 @@ const NftCreate: NextPage = () => {
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       onClick={handleCreateNft}
+                      disabled={isUploadingMetadata || isCreatingNftImage}
                     >
                       List
                     </button>

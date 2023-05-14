@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import { useCallback } from "react";
+import { toast } from "react-toastify";
 import useSWR from "swr";
 
 import { CryptoHookFactory } from "types/hooks";
@@ -58,8 +59,9 @@ export const hookFactory: OwnedNftsHookFactory =
           );
           await result?.wait();
 
-          alert("Item has been listed");
+          toast.success("Item has been listed");
         } catch (error) {
+          toast.error("Processing error");
           console.error(error);
         }
       },

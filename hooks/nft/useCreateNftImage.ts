@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 
 import { NftImagePayload, PinataResponse } from "types/api";
@@ -15,12 +16,20 @@ const createNftImage = async (
 export const useCreateNftImage = (
   onSuccess?: (data: PinataResponse) => void
 ) => {
-  const { trigger } = useSWRMutation("/api/verify-image", createNftImage, {
-    onSuccess,
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const { isMutating, trigger } = useSWRMutation(
+    "/api/verify-image",
+    createNftImage,
+    {
+      onSuccess: (data) => {
+        toast.success("Image uploaded");
+        onSuccess?.(data);
+      },
+      onError: (error) => {
+        toast.error("Image upload error");
+        console.error(error);
+      },
+    }
+  );
 
-  return { createNftImage: trigger };
+  return { isCreatingNftImage: isMutating, createNftImage: trigger };
 };

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import useSWRMutation from "swr/mutation";
 
 import { NftMetaPayload, PinataResponse } from "types/api";
@@ -15,12 +16,20 @@ const uploadMetadata = async (
 export const useUploadMetadata = (
   onSuccess?: (data: PinataResponse) => void
 ) => {
-  const { trigger } = useSWRMutation("/api/verify", uploadMetadata, {
-    onSuccess,
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const { isMutating, trigger } = useSWRMutation(
+    "/api/verify",
+    uploadMetadata,
+    {
+      onSuccess: (data) => {
+        toast.success("Metadata uploaded");
+        onSuccess?.(data);
+      },
+      onError: (error) => {
+        toast.error("Metadata upload error");
+        console.error(error);
+      },
+    }
+  );
 
-  return { uploadMetadata: trigger };
+  return { isUploadingMetadata: isMutating, uploadMetadata: trigger };
 };
